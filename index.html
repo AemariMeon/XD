@@ -51,7 +51,8 @@
   </div>
 
   <script>
-    let topics = [
+    // Default topics
+    const defaultTopics = [
       "Blockchain", 
       "Artificial Intelligence", 
       "Cybersecurity", 
@@ -59,6 +60,9 @@
       "Edge/Quantum Computing", 
       "Augmented Reality"
     ];
+
+    // Check if there's a saved topics array in localStorage
+    let topics = JSON.parse(localStorage.getItem('topics')) || defaultTopics;
 
     function getRandomTopic() {
       if (topics.length > 0) {
@@ -69,10 +73,28 @@
         
         // Remove the selected topic from the list
         topics.splice(randomIndex, 1);
+        
+        // Save the updated topics array in localStorage
+        localStorage.setItem('topics', JSON.stringify(topics));
       } else {
         document.getElementById('topicDisplay').textContent = "All topics have been taken.";
       }
     }
+
+    // Reset topics function
+    function resetTopics() {
+      topics = [...defaultTopics]; // Reset to default topics
+      localStorage.setItem('topics', JSON.stringify(topics)); // Save the reset topics
+      document.getElementById('topicDisplay').textContent = "Topics have been reset!";
+    }
+
+    // Add event listener for Ctrl + R shortcut
+    document.addEventListener('keydown', function(event) {
+      if (event.ctrlKey && event.key === 'r') {
+        event.preventDefault(); // Prevent the default browser refresh behavior
+        resetTopics(); // Call the reset function
+      }
+    });
   </script>
 </body>
 </html>
