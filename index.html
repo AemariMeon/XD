@@ -61,37 +61,39 @@
       "Augmented Reality"
     ];
 
-    // Check if there's a saved topics array in localStorage
+    // Check if there's a saved topics array in localStorage, else use default
     let topics = JSON.parse(localStorage.getItem('topics')) || defaultTopics;
 
     function getRandomTopic() {
       if (topics.length > 0) {
+        // Get a random topic index
         const randomIndex = Math.floor(Math.random() * topics.length);
         const selectedTopic = topics[randomIndex];
-        
+
+        // Display the selected topic
         document.getElementById('topicDisplay').textContent = "Your topic is: " + selectedTopic;
-        
+
         // Remove the selected topic from the list
         topics.splice(randomIndex, 1);
-        
-        // Save the updated topics array in localStorage
+
+        // Save the updated topics array in localStorage to persist changes
         localStorage.setItem('topics', JSON.stringify(topics));
       } else {
         document.getElementById('topicDisplay').textContent = "All topics have been taken.";
       }
     }
 
-    // Reset topics function
+    // Reset topics function (accessible only to the programmer via Ctrl+R)
     function resetTopics() {
       topics = [...defaultTopics]; // Reset to default topics
       localStorage.setItem('topics', JSON.stringify(topics)); // Save the reset topics
       document.getElementById('topicDisplay').textContent = "Topics have been reset!";
     }
 
-    // Add event listener for Ctrl + R shortcut
+    // Add event listener for Ctrl + R shortcut to reset topics
     document.addEventListener('keydown', function(event) {
       if (event.ctrlKey && event.key === 'r') {
-        event.preventDefault(); // Prevent the default browser refresh behavior
+        event.preventDefault(); // Prevent default refresh behavior
         resetTopics(); // Call the reset function
       }
     });
